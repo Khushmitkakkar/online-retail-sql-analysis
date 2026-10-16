@@ -8,4 +8,5 @@ SELECT InvoiceNo, StockCode, Description, Quantity, InvoiceDate,
 FROM orders
 WHERE CustomerID IS NOT NULL
   AND Quantity > 0
-  AND UnitPrice > 0;
+  AND UnitPrice > 0
+  AND StockCode NOT IN ('POST','DOT','M','C2','D','S','BANK CHARGES','AMAZONFEE','CRUK','B');
