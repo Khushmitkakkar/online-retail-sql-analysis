@@ -1,3 +1,4 @@
+-- Dec 2011 excluded: month is incomplete (data ends 9 Dec)
 SELECT	DATEFROMPARTS(YEAR(InvoiceDate), MONTH(InvoiceDate), 1) AS Month_start,
 	CAST(SUM(Revenue) AS NUMERIC(10,2)) AS Total_Revenue,
 	COUNT(DISTINCT InvoiceNo) AS Order_count,
