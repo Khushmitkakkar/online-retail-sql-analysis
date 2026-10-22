@@ -1,8 +1,12 @@
-/*========================================================
-  Q10: Index Optimization — Customer Order Lookup
-========================================================*/
+-- #10 Index optimization: customer order lookup
+-- Question: does a nonclustered index speed up looking up one customer's orders?
+-- Test customer: 14646 (2,085 rows).
+--
+-- Results (SET STATISTICS IO / TIME):
+--   Before index: Table Scan, 6,400 logical reads, CPU 109 ms, elapsed 116 ms
+--   After index:  Index Seek, ___ logical reads, CPU ___ ms, elapsed ___ ms
 
--- Step 1: Measure query performance before indexing
+-- Step 1: measure before indexing
 SET STATISTICS IO ON;
 SET STATISTICS TIME ON;
 
@@ -10,14 +14,14 @@ SELECT InvoiceNo, InvoiceDate, Quantity, UnitPrice
 FROM dbo.orders
 WHERE CustomerID = 14646;
 
--- Step 2: Create a covering nonclustered index
-CREATE NONCLUSTERED INDEX ix_orders_customerid
-ON dbo.orders (CustomerID)
-INCLUDE (InvoiceNo, InvoiceDate, Quantity, UnitPrice);
+-- Step 2: covering nonclustered index (INCLUDE columns avoid a table lookup)
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'ix_orders_customerid')
+    CREATE NONCLUSTERED INDEX ix_orders_customerid
+    ON dbo.orders (CustomerID)
+    INCLUDE (InvoiceNo, InvoiceDate, Quantity, UnitPrice);
+GO
 
--- Step 3: Rerun the same SELECT query and inspect
--- logical reads, CPU/elapsed time, and actual execution plan
-
+-- Step 3: rerun the same query; compare logical reads and the execution plan
 SELECT InvoiceNo, InvoiceDate, Quantity, UnitPrice
 FROM dbo.orders
 WHERE CustomerID = 14646;
