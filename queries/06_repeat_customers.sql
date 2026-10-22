@@ -1,10 +1,15 @@
--- Excludes Dec 2011: data ends 9 Dec 2011, so that month is incomplete.
-SELECT 
-	DATEFROMPARTS(YEAR(InvoiceDate), MONTH(InvoiceDate), 1) AS [MONTH],
-	COUNT(DISTINCT InvoiceNo) as total_orders,
-	COUNT(DISTINCT CASE WHEN Quantity < 0 THEN InvoiceNo END) AS cancelled_orders,
-	CAST(COUNT(DISTINCT CASE WHEN Quantity < 0 THEN InvoiceNo END) * 100.0 / COUNT(DISTINCT InvoiceNo) AS NUMERIC(10,2))  AS Cancellation_rate_pct
-FROM clean_orders_all
-WHERE InvoiceDate < '2011-12-01'
-GROUP BY DATEFROMPARTS(YEAR(InvoiceDate), MONTH(InvoiceDate), 1)
-ORDER BY [MONTH]
+-- #6 Repeat customer rate
+-- Repeat customer = placed more than one distinct order (InvoiceNo).
+-- Counted at customer level, so the denominator is customers, not invoices.
+-- Uses clean_orders (real purchases only).
+WITH customer_orders AS (
+    SELECT CustomerID, COUNT(DISTINCT InvoiceNo) AS Order_count
+    FROM clean_orders
+    GROUP BY CustomerID
+)
+SELECT
+    COUNT(*) AS Total_customers,
+    COUNT(CASE WHEN Order_count > 1 THEN 1 END) AS Repeat_customers,
+    CAST(COUNT(CASE WHEN Order_count > 1 THEN 1 END) * 100.0 / COUNT(*)
+         AS NUMERIC(5,2)) AS [Repeat_rate_%]
+FROM customer_orders;
