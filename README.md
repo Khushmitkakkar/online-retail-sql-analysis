@@ -65,7 +65,7 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 - **65.27% of customers placed more than one order.**
 - **Revenue is seasonal:** it climbs from September to a peak of 1.12M in Nov 2011 (+50.5% in Sep, then up again into Nov).
 - **Retention:** only about 22 to 37% of a cohort buys again in the next month, then it flattens around 35%. The Dec 2010 cohort rises to 50.2% in Nov 2011, driven by the seasonal peak rather than loyalty.
-- **Indexing:** a covering nonclustered index on CustomerID changed the lookup from a table scan (6,400 logical reads) to an index seek (___ logical reads).
+- **Indexing:** a covering nonclustered index on CustomerID changed the lookup from a table scan (6,400 logical reads) to an index seek (17 logical reads).
 
 ## Recommendations
 - Protect the largest accounts: a few customers carry a visible share of revenue.
