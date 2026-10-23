@@ -1,4 +1,4 @@
--- Net revenue (sales minus cancellations), so bulk orders cancelled later don't inflate rankings.
+-- #2 Top 10 products by net revenue (net revenue = sales minus cancellations, not profit)
 -- StockCode identifies the product; Description is only a label (MAX picks one per code).
 SELECT TOP 10 WITH TIES
     StockCode,
