@@ -3,8 +3,8 @@
 -- Test customer: 14646 (2,085 rows).
 --
 -- Results (SET STATISTICS IO / TIME):
---   Before index: Table Scan, 6,400 logical reads, CPU 109 ms, elapsed 116 ms
---   After index:  Index Seek, ___ logical reads, CPU ___ ms, elapsed ___ ms
+--   Before index: Table Scan, 6,400 logical reads, CPU 94 ms
+--   After index:  Index Seek, 17 logical reads, CPU 0 ms
 
 -- Step 1: measure before indexing
 SET STATISTICS IO ON;
