@@ -32,7 +32,7 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 
 ## Assumptions
 - **Net revenue = sales minus cancellations. It is not profit**, because the data has no cost information.
-- Rows without a CustomerID are treated as guest checkouts and excluded.
+- Rows without a CustomerID (about 25% of rows, 14.7% of gross sales) are treated as guest checkouts and excluded from every query, so all figures come from one consistent population and reconcile with each other.
 - A cancellation is a row with negative quantity.
 - Dec 2011 is incomplete (data ends 9 Dec), so month-to-month queries exclude it and cohorts stop before it.
 - Product is identified by StockCode; Description is only a label.
@@ -44,6 +44,7 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 ## Queries
 | # | File | What it answers |
 |---|---|---|
+| 00 | `00_data_exploration.sql` | Data checks behind the cleaning rules |
 | 00 | `00_clean_orders_view.sql` | Cleaning views |
 | 01 | `01_monthly_revenue.sql` | Monthly revenue, orders, customers |
 | 02 | `02_top_products.sql` | Top 10 products by net revenue |
@@ -58,7 +59,7 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 | 11 | `11_cohort_retention_triangle.sql` | Full cohort retention triangle |
 
 ## Findings
-- **Net revenue is 8.30M** (gross 8.91M, cancellations -0.61M, about 6.9% of gross).
+- **Net revenue from identified customers is 8.29M** (gross 8.76M, cancellations -0.47M, about 5.4% of gross).
 - **Revenue is concentrated in a few customers**: the top 3 customers (14646, 18102, 17450) account for about 8.8% of net revenue.
 - **Top product:** 22423 REGENCY CAKESTAND 3 TIER, 132,870 net revenue.
 - **The UK is 82.34% of net revenue.** Netherlands, EIRE and Australia have only a handful of customers each but large revenue, which looks like wholesale buying.
@@ -80,4 +81,4 @@ Screenshots of each query's output are in [`results/`](results).
 ## Limitations
 - One year of data, so seasonality cannot be separated from growth.
 - No cost data, so no profit or margin analysis.
-- Guest checkouts (no CustomerID) are excluded from all customer metrics.
+- About 15% of gross sales (1.51M of 10.27M) have no CustomerID and are excluded, so revenue figures understate total sales.
