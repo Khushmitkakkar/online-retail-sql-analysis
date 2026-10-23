@@ -3,6 +3,7 @@
 SQL-only analysis of a UK online retailer's transactions: revenue trends, top customers and products, cancellations, repeat buying, cohort retention and index tuning.
 
 **Tools:** SQL Server Express, SSMS, T-SQL (CTEs, window functions, views, indexing)
+
 **Dataset:** [Online Retail, UCI / Kaggle](https://archive.ics.uci.edu/dataset/352/online+retail), 541,909 rows, single table, 1 Dec 2010 to 9 Dec 2011
 
 ## Business problem
@@ -61,10 +62,10 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 - **Revenue is concentrated in a few customers**: the top 3 customers (14646, 18102, 17450) account for about 8.8% of net revenue.
 - **Top product:** 22423 REGENCY CAKESTAND 3 TIER, 132,870 net revenue.
 - **The UK is 82.34% of net revenue.** Netherlands, EIRE and Australia have only a handful of customers each but large revenue, which looks like wholesale buying.
-- **About 13 to 20% of invoices each month are cancellations..**
+- **About 13 to 20% of invoices each month are cancellations.**
 - **65.27% of customers placed more than one order.**
 - **Revenue is seasonal:** it climbs from September to a peak of 1.12M in Nov 2011 (+50.5% in Sep, +4.1% in Oct, +16.3% in Nov).
-- - **Retention:** only about 15 to 24% of a cohort buys again in the next month. The Dec 2010 cohort looks much higher (36.5%), but it includes existing customers, so it is not comparable. That cohort also jumps to 50.2% in Nov 2011, driven by the seasonal peak rather than loyalty.
+- **Retention:** only about 15 to 24% of a cohort buys again in the next month. The Dec 2010 cohort looks much higher (36.5%), but it includes existing customers, so it is not comparable. That cohort also jumps to 50.2% in Nov 2011, driven by the seasonal peak rather than loyalty.
 - **Indexing:** a covering nonclustered index on CustomerID changed the lookup from a table scan (6,400 logical reads) to an index seek (17 logical reads).
 
 ## Recommendations
