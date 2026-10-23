@@ -53,7 +53,7 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 | 07 | `07_mom_growth.sql` | Month-over-month growth (LAG) |
 | 08 | `08_cohort_retention.sql` | Month +1 retention per cohort |
 | 09 | `09_latest_order_below_average.sql` | Latest order below the customer's previous average |
-| 10 | `10_add_an_index.sql` | Index before and after |
+| 10 | `10_indexing.sql` | Index before and after |
 | 11 | `11_cohort_retention_triangle.sql` | Full cohort retention triangle |
 
 ## Findings
