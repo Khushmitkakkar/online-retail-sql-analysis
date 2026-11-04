@@ -99,3 +99,16 @@ SELECT
     CAST(SUM(CASE WHEN Quantity < 0 THEN Revenue END) AS NUMERIC(12,2)) AS Cancelled,
     CAST(SUM(Revenue) AS NUMERIC(12,2)) AS Net
 FROM clean_orders_all;
+
+-- Check 8: do product codes have more than one description?
+-- Result: 642 of 3,958 StockCodes (about 16%) have more than one description.
+-- Decision: StockCode identifies a product; Description is only a label (MAX(Description) per code).
+-- Grouping by Description would split one product's revenue across several rows.
+SELECT COUNT(*) AS StockCodes_with_multiple_descriptions,
+(SELECT COUNT(DISTINCT StockCode) FROM orders) AS Total_Stock_Codes
+FROM (
+    SELECT StockCode
+    FROM orders
+    GROUP BY StockCode
+    HAVING COUNT(DISTINCT Description) > 1
+) AS X;
