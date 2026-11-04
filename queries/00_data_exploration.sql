@@ -1,6 +1,6 @@
 -- 00. Data exploration: the checks behind the cleaning rules
 -- Run against the raw table `orders` in RetailDB before the views were built.
--- Each result is recorded in a comment below its query.
+-- Each result and decision is recorded in the comment above its query.
 
 USE RetailDB;
 GO
