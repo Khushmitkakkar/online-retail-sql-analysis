@@ -46,6 +46,7 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 |---|---|---|
 | 00 | `00_data_exploration.sql` | Data checks behind the cleaning rules |
 | 00 | `00_clean_orders_view.sql` | Cleaning views |
+| 00b | `00b_row_count_flow.sql` | Row count after each cleaning step |
 | 01 | `01_monthly_revenue.sql` | Monthly revenue, orders, customers |
 | 02 | `02_top_products.sql` | Top 10 products by net revenue |
 | 03 | `03_top_customers.sql` | Top 10 customers and their share of revenue |
@@ -57,22 +58,24 @@ Both exclude: rows with no CustomerID, zero or negative prices, and non-product 
 | 09 | `09_latest_order_below_average.sql` | Latest order below the customer's previous average |
 | 10 | `10_indexing.sql` | Index before and after |
 | 11 | `11_cohort_retention_triangle.sql` | Full cohort retention triangle |
+| 12 | `12_basket_size.sql` | Median and average invoice size, share of bulk invoices |
 
 ## Findings
 - **Net revenue from identified customers is 8.29M** (gross 8.76M, cancellations -0.47M, about 5.4% of gross).
 - **Revenue is concentrated in a few customers**: the top 3 customers (14646, 18102, 17450) account for about 8.8% of net revenue.
 - **Top product:** 22423 REGENCY CAKESTAND 3 TIER, 132,870 net revenue.
-- **The UK is 82.34% of net revenue.** Netherlands, EIRE and Australia have only a handful of customers each but large revenue, which looks like wholesale buying.
+- **The UK is 82.34% of net revenue.** Netherlands, EIRE and Australia have only a handful of customers each but large revenue, which looks like bulk buying buying.
 - **About 13 to 20% of invoices each month are cancellations.**
 - **65.27% of customers placed more than one order.**
-- **Revenue is seasonal:** it climbs from September to a peak of 1.12M in Nov 2011 (+50.5% in Sep, +4.1% in Oct, +16.3% in Nov).
-- **Retention:** only about 15 to 24% of a cohort buys again in the next month. The Dec 2010 cohort looks much higher (36.5%), but it includes existing customers, so it is not comparable. That cohort also jumps to 50.2% in Nov 2011, driven by the seasonal peak rather than loyalty.
+- **Revenue rises sharply from September to a peak of 1.12M in Nov 2011** (+50.5% in Sep, +4.1% in Oct, +16.3% in Nov). With one year of data, seasonality cannot be separated from growth.
+- **Retention:** only about 15 to 24% of a cohort buys again in the next month. The Dec 2010 cohort looks much higher (36.5%), but it includes existing customers, so it is not comparable. That cohort also jumps to 50.2% in Nov 2011, driven by the Nov peak rather than loyalty.
+- Basket size (query 12): the median invoice is 156 units (£302), and 84% of invoices have 50+ units (50 is my own threshold), so orders look bulk-sized.
 - **Indexing:** a covering nonclustered index on CustomerID changed the lookup from a table scan (6,400 logical reads) to an index seek (17 logical reads).
 
 ## Recommendations
 - Protect the largest accounts: a few customers carry a visible share of revenue.
 - Investigate cancellations, especially large bulk orders cancelled minutes after being placed, since they inflate gross figures.
-- Plan stock and staffing for the Sep to Nov peak.
+- Plan for the Sep to Nov surge, and confirm with a second year of data whether it repeats.
 - Focus retention effort on the first month after a customer's first order, where most customers drop off.
 
 ## Results
