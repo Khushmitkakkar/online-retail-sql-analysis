@@ -82,3 +82,4 @@ Screenshots of each query's output are in [`results/`](results).
 - One year of data, so seasonality cannot be separated from growth.
 - No cost data, so no profit or margin analysis.
 - About 15% of gross sales (1.51M of 10.27M) have no CustomerID and are excluded, so revenue figures understate total sales.
+- No customer-type field, so buyer type is inferred from order size, not confirmed.
