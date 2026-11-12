@@ -13,7 +13,7 @@ SELECT 4, 'clean_orders_all (net view)', COUNT(*)
 FROM clean_orders_all
 WHERE CustomerID IS NOT NULL
 UNION ALL
-SELECT 5, 'Purchases only (Quantity > 0),', COUNT(*)
+SELECT 5, 'Purchases only (Quantity > 0)', COUNT(*)
 FROM clean_orders
 WHERE CustomerID IS NOT NULL)
 
